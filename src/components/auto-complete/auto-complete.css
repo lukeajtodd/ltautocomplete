@@ -51,7 +51,7 @@ ul {
   background: var(--autocomplete-dropdown-bg, transparent);
   color: var(--autocomplete-dropdown-color, black);
   border: var(--autocomplete-dropdown-border, 1px solid black);
-  border-color: var(--autocomplete-dropdown-border-color, black);
+  border-color: var(--autocomplete-open-border-color, black);
   border-top: var(--autocomplete-dropdown-border-top, none);
   border-bottom-left-radius: var(--autocomplete-dropdown-blbr, 3px);
   border-bottom-right-radius: var(--autocomplete-dropdown-brbr, 3px);
@@ -80,4 +80,5 @@ li:focus {
   border-bottom: var(--autocomplete-open-border-bottom, none);
   border-bottom-left-radius: var(--autocomplete-open-blbr, 0);
   border-bottom-right-radius: var(--autocomplete-open-brbr, 0);
+  border-color: var(--autocomplete-open-border-color, black);
 }
