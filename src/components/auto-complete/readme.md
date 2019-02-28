@@ -11,6 +11,15 @@
 | ------------------------ | ------------------------- | ----------- | -------- | ----------- |
 | `apiKey`                 | `api-key`                 |             | `string` | `undefined` |
 | `autocompleteIdentifier` | `autocomplete-identifier` |             | `string` | `undefined` |
+| `name`                   | `name`                    |             | `string` | `undefined` |
+
+
+## Events
+
+| Event         | Description | Type                |
+| ------------- | ----------- | ------------------- |
+| `placeChange` |             | `CustomEvent<void>` |
+| `ready`       |             | `CustomEvent<void>` |
 
 
 ----------------------------------------------

@@ -15,13 +15,11 @@ export namespace Components {
   interface AutoComplete {
     'apiKey': string;
     'autocompleteIdentifier': string;
-    'class': string;
     'name': string;
   }
   interface AutoCompleteAttributes extends StencilHTMLAttributes {
     'apiKey'?: string;
     'autocompleteIdentifier'?: string;
-    'class'?: string;
     'name'?: string;
     'onPlaceChange'?: (event: CustomEvent) => void;
     'onReady'?: (event: CustomEvent) => void;
