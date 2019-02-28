@@ -33,22 +33,25 @@ input {
 }
 
 ul {
-  width: 100%;
+  width: calc(100% + 2px);
   position: absolute;
   bottom: 2px;
+  left: -1px;
   transform: translateY(100%);
   opacity: 1;
   transition: opacity 0.2s;
   list-style-type: none;
-  margin: var(--autocomplete-margin, 0);
+  z-index: 11;
   padding: 0;
   padding-left: var(--autocomplete-dropdown-pad-left, 0);
   padding-right: var(--autocomplete-dropdown-pad-right, 0);
   padding-top: var(--autocomplete-dropdown-pad-top, 0);
   padding-bottom: var(--autocomplete-dropdown-pad-bottom, 0);
+  margin: var(--autocomplete-dropdown-margin, 0);
   background: var(--autocomplete-dropdown-bg, transparent);
   color: var(--autocomplete-dropdown-color, black);
   border: var(--autocomplete-dropdown-border, 1px solid black);
+  border-color: var(--autocomplete-dropdown-border-color, black);
   border-top: var(--autocomplete-dropdown-border-top, none);
   border-bottom-left-radius: var(--autocomplete-dropdown-blbr, 3px);
   border-bottom-right-radius: var(--autocomplete-dropdown-brbr, 3px);
@@ -57,11 +60,20 @@ ul {
 }
 
 li {
+  cursor: pointer;
   padding: 0;
   padding-left: var(--autocomplete-item-pad-left, 0);
   padding-right: var(--autocomplete-item-pad-right, 0);
   padding-top: var(--autocomplete-item-pad-top, 0);
   padding-bottom: var(--autocomplete-item-pad-bottom, 0);
+  border-bottom: var(--autocomplete-item-border-bottom, none);
+  font-size: var(--autocomplete-item-font-size, 12px);
+}
+
+li:hover,
+li:active,
+li:focus {
+  background: var(--autocomplete-item-hover-bg, grey);
 }
 
 .open input {
