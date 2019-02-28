@@ -38,7 +38,7 @@ export class AutoComplete {
   serviceLoaded: boolean = false;
 
   @State() googleObjectLoaded: boolean = false;
-  @State() predictions: Array<Prediction>;
+  @State() predictions: Array<Prediction> = [];
   @State() currentCountryIso: string;
   @State() dropdownVisible: boolean;
   @State() service: AutocompleteService;
@@ -49,7 +49,6 @@ export class AutoComplete {
   @Prop() apiKey: string;
   @Prop() autocompleteIdentifier: string;
   @Prop() name: string;
-  @Prop() class: string;
 
   @Event() placeChange: EventEmitter;
   @Event() ready: EventEmitter;
@@ -67,7 +66,6 @@ export class AutoComplete {
         <input
           type="text"
           name={this.name}
-          class={this.class}
           onInput={this.handleInput}
           onKeyUp={this.callAutoComplete}
           onBlur={this.hideDropdown}
