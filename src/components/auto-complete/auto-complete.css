@@ -1,3 +1,5 @@
+@import '../../styles/utils';
+
 .hidden {
   opacity: 0;
   z-index: -100;
@@ -21,6 +23,8 @@ input {
   border-top-left-radius: var(--autocomplete-tlbr, 3px);
   border-top-right-radius: var(--autocomplete-trbr, 3px);
   outline: var(--autocomplete-outline, none);
+  color: var(--autocomplete-color, black);
+  font-size: var(--font-size, 15px);
 }
 
 ul {

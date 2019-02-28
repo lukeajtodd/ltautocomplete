@@ -10,6 +10,13 @@
     <script src="/build/auto-complete.js"></script>
     <style>
       auto-complete {
+        --font-size: 13px;
+      }
+
+      @media screen and (min-width: 768px) {
+        auto-complete {
+          --font-size: calc(0.5vw + 10.16px);
+        }
       }
     </style>
   </head>
