@@ -1,0 +1,61 @@
+.hidden {
+  opacity: 0;
+  z-index: -100;
+}
+
+.autocomplete-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+input {
+  width: 100%;
+  height: 100%;
+  margin: var(--autocomplete-margin, 0);
+  padding: var(---autocomplete-pad, 0);
+  background: var(--autocomplete-bg, transparent);
+  border: var(--autocomplete-border, 1px solid black);
+  border-bottom-left-radius: var(--autocomplete-blbr, 3px);
+  border-bottom-right-radius: var(--autocomplete-brbr, 3px);
+  border-top-left-radius: var(--autocomplete-tlbr, 3px);
+  border-top-right-radius: var(--autocomplete-trbr, 3px);
+  outline: var(--autocomplete-outline, none);
+}
+
+ul {
+  position: absolute;
+  bottom: 2px;
+  transform: translateY(100%);
+  opacity: 1;
+  transition: opacity 0.2s;
+  list-style-type: none;
+  margin: var(--autocomplete-margin, 0);
+  padding: 0;
+  padding-left: var(--autocomplete-dropdown-pad-left, 0);
+  padding-right: var(--autocomplete-dropdown-pad-right, 0);
+  padding-top: var(--autocomplete-dropdown-pad-top, 0);
+  padding-bottom: var(--autocomplete-dropdown-pad-bottom, 0);
+  background: var(--autocomplete-dropdown-bg, transparent);
+  color: var(--autocomplete-dropdown-color, black);
+  border: var(--autocomplete-dropdown-border, 1px solid black);
+  border-top: var(--autocomplete-dropdown-border-top, none);
+  border-bottom-left-radius: var(--autocomplete-dropdown-blbr, 3px);
+  border-bottom-right-radius: var(--autocomplete-dropdown-brbr, 3px);
+  border-top-left-radius: var(--autocomplete-dropdown-tlbr, 0);
+  border-top-right-radius: var(--autocomplete-dropdown-trbr, 0);
+}
+
+li {
+  padding: 0;
+  padding-left: var(--autocomplete-item-pad-left, 0);
+  padding-right: var(--autocomplete-item-pad-right, 0);
+  padding-top: var(--autocomplete-item-pad-top, 0);
+  padding-bottom: var(--autocomplete-item-pad-bottom, 0);
+}
+
+.open input {
+  border-bottom: var(--autocomplete-open-border-bottom, none);
+  border-bottom-left-radius: var(--autocomplete-open-blbr, 0);
+  border-bottom-right-radius: var(--autocomplete-open-brbr, 0);
+}

@@ -25,6 +25,7 @@ import { debounce } from 'throttle-debounce';
  */
 @Component({
   tag: 'auto-complete',
+  styleUrl: './auto-complete.css',
   shadow: true
 })
 export class AutoComplete {
@@ -62,13 +63,15 @@ export class AutoComplete {
 
   render() {
     return (
-      <div class="autocomplete-wrapper">
+      <div class={`autocomplete-wrapper${this.dropdownVisible ? ' open' : ''}`}>
         <input
           type="text"
           name={this.name}
           class={this.class}
           onInput={this.handleInput}
           onKeyUp={this.callAutoComplete}
+          onBlur={this.hideDropdown}
+          onFocus={this.showDropdown}
         />
         <ul
           class={`autocomplete-dropdown${
@@ -141,6 +144,16 @@ export class AutoComplete {
         }
       }
     });
+  };
+
+  private showDropdown = () => {
+    if (this.predictions.length > 0) {
+      this.dropdownVisible = true;
+    }
+  };
+
+  private hideDropdown = () => {
+    this.dropdownVisible = false;
   };
 
   private fillPostcode = (tempPostcode, comp) => {
@@ -257,6 +270,7 @@ export class AutoComplete {
 
     this.placeChange.emit(this.changedPlace);
 
+    this.dropdownVisible = false;
     this.predictions = [];
   };
 
@@ -305,9 +319,13 @@ export class AutoComplete {
               return;
             }
 
+            this.dropdownVisible = true;
             this.predictions = predictions;
           }
         );
+    } else {
+      this.dropdownVisible = false;
+      this.predictions = [];
     }
   };
 }
