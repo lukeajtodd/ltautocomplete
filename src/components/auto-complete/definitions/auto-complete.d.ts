@@ -3,6 +3,8 @@ export declare const Window: any;
 declare global {
   interface Window {
     google: any;
+    googleLoading: boolean;
+    googleObjectLoaded: boolean;
   }
 }
 

@@ -5,12 +5,12 @@
 Tag: `auto-complete`
 Required props:
 
-- apiKey: string - Google API key.
 - autocompleteIdentifier: string - Used to tag up the fields that are returned.
 - name: string - Adds name proeprty to input.
-- class: string - Any extra classes to be added to the input.
 
 ## Using this component
+
+The Google maps API must be loaded separately. This is to avoid issues with multiple instances being loaded when more than one of these components is on a page.
 
 ### Script tag
 

@@ -18,10 +18,8 @@ import { debounce } from 'throttle-debounce';
 /**
  * Usage: `auto-complete`
  * Required props:
- *  - apiKey: string - Google API key.
  *  - autocompleteIdentifier: string - Used to tag up the fields that are returned.
  *  - name: string - Adds name proeprty to input.
- *  - class: string - Any extra classes to be added to the input.
  */
 @Component({
   tag: 'auto-complete',
@@ -37,7 +35,7 @@ export class AutoComplete {
   sessionToken: any = {};
   serviceLoaded: boolean = false;
 
-  @State() googleObjectLoaded: boolean = false;
+  // @State() googleObjectLoaded: boolean = false;
   @State() predictions: Array<Prediction> = [];
   @State() currentCountryIso: string;
   @State() dropdownVisible: boolean;
@@ -46,7 +44,6 @@ export class AutoComplete {
   @State() street: string;
   @State() changedPlace: object = {};
 
-  @Prop() apiKey: string;
   @Prop() autocompleteIdentifier: string;
   @Prop() name: string;
 
@@ -91,59 +88,29 @@ export class AutoComplete {
     );
   }
 
-  componentDidLoad() {
-    this.init().then(
-      () => {
-        this.sessionToken = new window.google.maps.places.AutocompleteSessionToken();
-        this.service = new window.google.maps.places.AutocompleteService();
-        this.placeService = new window.google.maps.places.PlacesService(
-          document.createElement('div') // Requires an element to "bind" to
-        );
-        this.ready.emit();
-      },
-      err => {
-        console.log(err);
-      }
-    );
+  componentWillLoad() {
+    return new Promise((resolve, reject) => {
+      let i = 0;
+      (function wait() {
+        i++;
+        if (i > 200)
+          return reject(
+            'Timeout, make sure the Google Maps API is loaded globally.'
+          );
+        if (window.google) return resolve();
+        setTimeout(wait, 30);
+      })();
+    });
   }
 
-  private init = (): Promise<any> => {
-    return new Promise((resolve, reject) => {
-      this.injectSDK().then(
-        () => {
-          resolve(true);
-        },
-        err => {
-          reject(err);
-        }
-      );
-    });
-  };
-
-  private injectSDK = (): Promise<any> => {
-    return new Promise((resolve, reject) => {
-      if (this.googleObjectLoaded || window.google) {
-        resolve(true);
-      } else {
-        window['placesLoaded'] = () => {
-          this.googleObjectLoaded = true;
-          resolve(true);
-        };
-
-        let script = document.createElement('script');
-        script.id = 'googleMaps';
-
-        if (this.apiKey) {
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${
-            this.apiKey
-          }&libraries=places&callback=placesLoaded`;
-          document.body.appendChild(script);
-        } else {
-          reject('API Key not supplied');
-        }
-      }
-    });
-  };
+  componentDidLoad() {
+    this.sessionToken = new window.google.maps.places.AutocompleteSessionToken();
+    this.service = new window.google.maps.places.AutocompleteService();
+    this.placeService = new window.google.maps.places.PlacesService(
+      document.createElement('div') // Requires an element to "bind" to
+    );
+    this.ready.emit();
+  }
 
   private showDropdown = () => {
     if (this.predictions.length > 0) {
