@@ -66,6 +66,7 @@ export class AutoComplete {
         <input
           type="text"
           name={this.name}
+          id={this.name}
           onInput={this.handleInput}
           onKeyUp={this.callAutoComplete}
           onBlur={this.hideDropdown}
@@ -121,7 +122,7 @@ export class AutoComplete {
 
   private injectSDK = (): Promise<any> => {
     return new Promise((resolve, reject) => {
-      if (this.googleObjectLoaded) {
+      if (this.googleObjectLoaded || window.google) {
         resolve(true);
       } else {
         window['placesLoaded'] = () => {
