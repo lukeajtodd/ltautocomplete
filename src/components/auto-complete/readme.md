@@ -9,7 +9,6 @@
 
 | Property                 | Attribute                 | Description | Type     | Default     |
 | ------------------------ | ------------------------- | ----------- | -------- | ----------- |
-| `apiKey`                 | `api-key`                 |             | `string` | `undefined` |
 | `autocompleteIdentifier` | `autocomplete-identifier` |             | `string` | `undefined` |
 | `name`                   | `name`                    |             | `string` | `undefined` |
 
