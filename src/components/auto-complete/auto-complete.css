@@ -33,10 +33,10 @@ input {
 }
 
 ul {
-  width: calc(100% + 2px);
+  width: 100%;
   position: absolute;
   bottom: 2px;
-  left: -1px;
+  left: 0;
   transform: translateY(100%);
   opacity: 1;
   transition: opacity 0.2s;
