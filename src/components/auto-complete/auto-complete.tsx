@@ -1,18 +1,19 @@
-import { Component, Prop, State, Watch } from '@stencil/core';
+import {
+  Component,
+  Prop,
+  State,
+  Watch,
+  Event,
+  EventEmitter
+} from '@stencil/core';
 import {
   PlaceService,
   Prediction,
   GoogleMapsObject,
   FieldWithData,
   AutocompleteService
-} from './auto-complete-definitions';
+} from './definitions/auto-complete';
 import { debounce } from 'throttle-debounce';
-
-declare global {
-  interface Window {
-    google: any;
-  }
-}
 
 @Component({
   tag: 'auto-complete',
@@ -27,23 +28,58 @@ export class AutoComplete {
   placeService: PlaceService = {};
   sessionToken: any = {};
   serviceLoaded: boolean = false;
-  googleObjectLoaded: boolean = false;
 
+  @State() googleObjectLoaded: boolean = false;
   @State() predictions: Array<Prediction>;
   @State() currentCountryIso: string;
   @State() dropdownVisible: boolean;
   @State() service: AutocompleteService;
   @State() google: GoogleMapsObject;
   @State() street: string;
+  @State() changedPlace: object = {};
 
   @Prop() apiKey: string;
   @Prop() autocompleteIdentifier: string;
+  @Prop() name: string;
+  @Prop() class: string;
+
+  @Event() placeChange: EventEmitter;
+  @Event() ready: EventEmitter;
 
   @Watch('service')
   serviceWatchHandler(newVal: boolean) {
     if (newVal) {
       this.serviceLoaded = true;
     }
+  }
+
+  render() {
+    return (
+      <div class="autocomplete-wrapper">
+        <input
+          type="text"
+          name={this.name}
+          class={this.class}
+          onInput={this.handleInput}
+          onKeyUp={this.callAutoComplete}
+        />
+        <ul
+          class={`autocomplete-dropdown${
+            this.dropdownVisible ? '' : ' hidden'
+          }`}
+        >
+          {this.predictions &&
+            this.predictions.map(prediction => (
+              <li
+                key={prediction.id}
+                onClick={() => this.emulatePlaceChange(prediction)}
+              >
+                {prediction.description}
+              </li>
+            ))}
+        </ul>
+      </div>
+    );
   }
 
   componentDidLoad() {
@@ -54,6 +90,7 @@ export class AutoComplete {
         this.placeService = new window.google.maps.places.PlacesService(
           document.createElement('div') // Requires an element to "bind" to
         );
+        this.ready.emit();
       },
       err => {
         console.log(err);
@@ -76,51 +113,28 @@ export class AutoComplete {
 
   private injectSDK = (): Promise<any> => {
     return new Promise((resolve, reject) => {
-      window['placesLoaded'] = () => {
-        this.googleObjectLoaded = true;
+      if (this.googleObjectLoaded) {
         resolve(true);
-      };
-
-      let script = document.createElement('script');
-      script.id = 'googleMaps';
-
-      if (this.apiKey) {
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${
-          this.apiKey
-        }&libraries=places&callback=placesLoaded`;
-        document.body.appendChild(script);
       } else {
-        reject('API Key not supplied');
+        window['placesLoaded'] = () => {
+          this.googleObjectLoaded = true;
+          resolve(true);
+        };
+
+        let script = document.createElement('script');
+        script.id = 'googleMaps';
+
+        if (this.apiKey) {
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${
+            this.apiKey
+          }&libraries=places&callback=placesLoaded`;
+          document.body.appendChild(script);
+        } else {
+          reject('API Key not supplied');
+        }
       }
     });
   };
-
-  render() {
-    return (
-      <div class="autocomplete-wrapper">
-        <input
-          type="text"
-          onInput={this.handleInput}
-          onKeyUp={this.callAutoComplete}
-        />
-        <ul
-          class={`autocomplete-dropdown${
-            this.dropdownVisible ? '' : ' hidden'
-          }`}
-        >
-          {this.predictions &&
-            this.predictions.map(prediction => (
-              <li
-                key={prediction.id}
-                onClick={() => this.emulatePlaceChange(prediction)}
-              >
-                {prediction.description}
-              </li>
-            ))}
-        </ul>
-      </div>
-    );
-  }
 
   private fillPostcode = (tempPostcode, comp) => {
     if (comp.types.indexOf('postal_code') !== -1) {
@@ -234,6 +248,8 @@ export class AutoComplete {
       data: finalPostcode.trim()
     });
 
+    this.placeChange.emit(this.changedPlace);
+
     this.predictions = [];
   };
 
@@ -254,7 +270,10 @@ export class AutoComplete {
   };
 
   private setField = (field: FieldWithData) => {
-    return field;
+    const { identifier, data } = field;
+    this.changedPlace = Object.assign(this.changedPlace, {
+      [identifier]: data
+    });
   };
 
   private handleInput = (e: any): any => {
