@@ -35,7 +35,6 @@ export class AutoComplete {
   sessionToken: any = {};
   serviceLoaded: boolean = false;
 
-  // @State() googleObjectLoaded: boolean = false;
   @State() predictions: Array<Prediction> = [];
   @State() currentCountryIso: string;
   @State() dropdownVisible: boolean;
