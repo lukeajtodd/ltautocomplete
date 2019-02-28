@@ -1,7 +1,7 @@
 {
   "name": "ltautocomplete",
   "version": "0.0.2",
-  "description": "Stencil Component Starter",
+  "description": "Autocomplete - Google Places Service",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
   "unpkg": "dist/auto-complete.js",
@@ -20,8 +20,7 @@
     "throttle-debounce": "^2.1.0"
   },
   "devDependencies": {
-    "@stencil/core": "~0.16.2",
-    "@stencil/sass": "^0.1.1"
+    "@stencil/core": "~0.16.2"
   },
   "license": "MIT"
 }

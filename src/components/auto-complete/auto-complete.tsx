@@ -15,9 +15,16 @@ import {
 } from './definitions/auto-complete';
 import { debounce } from 'throttle-debounce';
 
+/**
+ * Usage: `auto-complete`
+ * Required props:
+ *  - apiKey: string - Google API key.
+ *  - autocompleteIdentifier: string - Used to tag up the fields that are returned.
+ *  - name: string - Adds name proeprty to input.
+ *  - class: string - Any extra classes to be added to the input.
+ */
 @Component({
   tag: 'auto-complete',
-  styleUrl: 'auto-complete.css',
   shadow: true
 })
 export class AutoComplete {
