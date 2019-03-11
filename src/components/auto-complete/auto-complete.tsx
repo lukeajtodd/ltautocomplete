@@ -3,7 +3,6 @@ import {
   Prop,
   State,
   Watch,
-  Element,
   Event,
   EventEmitter,
   FunctionalComponent
@@ -58,8 +57,6 @@ export class AutoComplete {
   sessionToken: any = {};
   serviceLoaded: boolean = false;
 
-  @Element() private element: HTMLElement;
-
   @State() predictions: Array<Prediction> = [];
   @State() currentCountryIso: string;
   @State() dropdownVisible: boolean = false;
@@ -71,13 +68,7 @@ export class AutoComplete {
   @Prop() autocompleteIdentifier: string;
   @Prop() name: string;
 
-  @Event({
-    eventName: "autocomplete:placeChange",
-    bubbles: true,
-    composed: true
-  })
-  placeChange: EventEmitter;
-  @Event({ composed: true }) ready: EventEmitter;
+  @Event() placeChange: EventEmitter;
 
   @Watch("service")
   serviceWatchHandler(newVal: boolean) {
@@ -129,7 +120,6 @@ export class AutoComplete {
     this.placeService = new window.google.maps.places.PlacesService(
       document.createElement("div") // Requires an element to "bind" to
     );
-    this.ready.emit();
   }
 
   private showDropdown = () => {
@@ -257,16 +247,7 @@ export class AutoComplete {
 
     console.log("will emit");
 
-    console.log(this.element);
-
-    // this.placeChange.emit(this.changedPlace);
-    this.element.dispatchEvent(
-      new CustomEvent("placeChange", {
-        detail: this.changedPlace,
-        composed: true,
-        bubbles: true
-      })
-    );
+    this.placeChange.emit(this.changedPlace);
 
     this.dropdownVisible = false;
     this.predictions = [];

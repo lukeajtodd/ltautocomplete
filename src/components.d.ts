@@ -19,8 +19,7 @@ export namespace Components {
   interface AutoCompleteAttributes extends StencilHTMLAttributes {
     'autocompleteIdentifier'?: string;
     'name'?: string;
-    'onAutocomplete:placeChange'?: (event: CustomEvent) => void;
-    'onReady'?: (event: CustomEvent) => void;
+    'onPlaceChange'?: (event: CustomEvent) => void;
   }
 }
 
