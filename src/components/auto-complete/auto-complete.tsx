@@ -67,22 +67,22 @@ export class AutoComplete {
           onKeyUp={this.callAutoComplete}
           onBlur={this.hideDropdown}
           onFocus={this.showDropdown}
+          value={this.street}
         />
-        <ul
-          class={`autocomplete-dropdown${
-            this.dropdownVisible ? '' : ' hidden'
-          }`}
-        >
-          {this.predictions &&
-            this.predictions.map(prediction => (
-              <li
-                key={prediction.id}
-                onClick={() => this.emulatePlaceChange(prediction)}
-              >
-                {prediction.description}
-              </li>
-            ))}
-        </ul>
+        {this.dropdownVisible ? (
+          <ul>
+            {this.predictions &&
+              this.predictions.map(prediction => (
+                <li
+                  key={prediction.id}
+                  onClick={() => this.emulatePlaceChange(prediction)}
+                >
+                  {prediction.description}
+                </li>
+              ))
+            }
+          </ul>
+        ) : null}
       </div>
     );
   }
@@ -202,6 +202,7 @@ export class AutoComplete {
   };
 
   private setPlaces = (components: Array<any>): void => {
+    console.log(components);
     let tempStreet = [];
     let tempPostcode = {
       prefix: '',
@@ -233,13 +234,16 @@ export class AutoComplete {
       data: finalPostcode.trim()
     });
 
+    console.log('will emit');
+
     this.placeChange.emit(this.changedPlace);
 
     this.dropdownVisible = false;
     this.predictions = [];
   };
 
-  private emulatePlaceChange = (opt): any => {
+  emulatePlaceChange = (opt): any => {
+    console.log('click trigger');
     this.placeService.getDetails(
       {
         placeId: opt.place_id,
@@ -247,6 +251,7 @@ export class AutoComplete {
       },
       (place: any, status: string) => {
         if (status == window.google.maps.places.PlacesServiceStatus.OK) {
+          console.log('service ok');
           this.setPlaces(place.address_components);
         } else {
           console.log(status);

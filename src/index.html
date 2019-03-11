@@ -36,5 +36,13 @@
       name="street"
       class="form-control"
     ></auto-complete>
+
+    <script>
+      document.querySelectorAll('auto-complete').forEach(comp => {
+        comp.addEventListener('placeChange', e => {
+          console.log(e);
+        });
+      });
+    </script>
   </body>
 </html>
