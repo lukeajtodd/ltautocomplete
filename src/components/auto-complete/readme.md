@@ -15,10 +15,10 @@
 
 ## Events
 
-| Event         | Description | Type                |
-| ------------- | ----------- | ------------------- |
-| `placeChange` |             | `CustomEvent<void>` |
-| `ready`       |             | `CustomEvent<void>` |
+| Event                      | Description | Type                |
+| -------------------------- | ----------- | ------------------- |
+| `autocomplete:placeChange` |             | `CustomEvent<void>` |
+| `ready`                    |             | `CustomEvent<void>` |
 
 
 ----------------------------------------------
