@@ -3,6 +3,7 @@ import {
   Prop,
   State,
   Watch,
+  Element,
   Event,
   EventEmitter,
   FunctionalComponent
@@ -56,6 +57,8 @@ export class AutoComplete {
   placeService: PlaceService = {};
   sessionToken: any = {};
   serviceLoaded: boolean = false;
+
+  @Element() private element: HTMLElement;
 
   @State() predictions: Array<Prediction> = [];
   @State() currentCountryIso: string;
@@ -253,7 +256,8 @@ export class AutoComplete {
 
     console.log('will emit');
 
-    this.placeChange.emit(this.changedPlace);
+    // this.placeChange.emit(this.changedPlace);
+    this.element.dispatchEvent(new CustomEvent('change', { detail: this.changedPlace, composed: true, bubbles: true }));
 
     this.dropdownVisible = false;
     this.predictions = [];
