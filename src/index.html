@@ -39,7 +39,7 @@
 
     <script>
       document.querySelectorAll('auto-complete').forEach(comp => {
-        comp.addEventListener('placeChange', e => {
+        comp.addEventListener('autocomplete:placeChange', e => {
           console.log(e);
         });
       });

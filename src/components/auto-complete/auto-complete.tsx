@@ -68,7 +68,11 @@ export class AutoComplete {
   @Prop() autocompleteIdentifier: string;
   @Prop() name: string;
 
-  @Event({ eventName: 'autocomplete:placeChange', composed: true }) placeChange: EventEmitter;
+  @Event({
+    eventName: 'autocomplete:placeChange',
+    bubbles: true,
+    composed: true
+  }) placeChange: EventEmitter;
   @Event({ composed: true }) ready: EventEmitter;
 
   @Watch('service')
