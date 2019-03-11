@@ -23,11 +23,6 @@
           --font-size: calc(0.5vw + 10.16px);
         }
       }
-
-      .hidden {
-        opacity: 0;
-        z-index: -999;
-      }
     </style>
   </head>
   <body>
@@ -39,7 +34,7 @@
 
     <script>
       document.querySelectorAll('auto-complete').forEach(comp => {
-        comp.addEventListener('change', e => {
+        comp.addEventListener('placeChange', e => {
           console.log(e);
         });
       });

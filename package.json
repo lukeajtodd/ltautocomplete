@@ -21,7 +21,8 @@
     "throttle-debounce": "^2.1.0"
   },
   "devDependencies": {
-    "@stencil/core": "~0.16.2"
+    "@stencil/core": "~0.16.2",
+    "workbox-build": "3.4.1"
   },
   "license": "MIT"
 }

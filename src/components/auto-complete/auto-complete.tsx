@@ -7,34 +7,34 @@ import {
   Event,
   EventEmitter,
   FunctionalComponent
-} from '@stencil/core';
+} from "@stencil/core";
 import {
   PlaceService,
   Prediction,
   GoogleMapsObject,
   FieldWithData,
   AutocompleteService
-} from './definitions/auto-complete';
-import { debounce } from 'throttle-debounce';
+} from "./definitions/auto-complete";
+import { debounce } from "throttle-debounce";
 
 interface PredictionListProps {
-  predictions: Array<Prediction>,
-  handleClick: Function,
-  visible: Boolean
+  predictions: Array<Prediction>;
+  handleClick: Function;
+  visible: Boolean;
 }
 
-const PredictionList: FunctionalComponent<PredictionListProps> = ({ predictions, handleClick, visible }) => (
-  <ul class={`${visible ? '' : 'hidden'}`}>
+const PredictionList: FunctionalComponent<PredictionListProps> = ({
+  predictions,
+  handleClick,
+  visible
+}) => (
+  <ul class={`${visible ? "" : "hidden"}`}>
     {predictions &&
       predictions.map(prediction => (
-        <li
-          key={prediction.id}
-          onClick={() => handleClick(prediction)}
-        >
+        <li key={prediction.id} onClick={() => handleClick(prediction)}>
           {prediction.description}
         </li>
-      ))
-    }
+      ))}
   </ul>
 );
 
@@ -45,8 +45,8 @@ const PredictionList: FunctionalComponent<PredictionListProps> = ({ predictions,
  *  - name: string - Adds name proeprty to input.
  */
 @Component({
-  tag: 'auto-complete',
-  styleUrl: './auto-complete.css',
+  tag: "auto-complete",
+  styleUrl: "./auto-complete.css",
   shadow: true
 })
 export class AutoComplete {
@@ -72,13 +72,14 @@ export class AutoComplete {
   @Prop() name: string;
 
   @Event({
-    eventName: 'autocomplete:placeChange',
+    eventName: "autocomplete:placeChange",
     bubbles: true,
     composed: true
-  }) placeChange: EventEmitter;
+  })
+  placeChange: EventEmitter;
   @Event({ composed: true }) ready: EventEmitter;
 
-  @Watch('service')
+  @Watch("service")
   serviceWatchHandler(newVal: boolean) {
     if (newVal) {
       this.serviceLoaded = true;
@@ -87,7 +88,7 @@ export class AutoComplete {
 
   render() {
     return (
-      <div class={`autocomplete-wrapper${this.dropdownVisible ? ' open' : ''}`}>
+      <div class={`autocomplete-wrapper${this.dropdownVisible ? " open" : ""}`}>
         <input
           type="text"
           name={this.name}
@@ -114,7 +115,7 @@ export class AutoComplete {
         i++;
         if (i > 200)
           return reject(
-            'Timeout, make sure the Google Maps API is loaded globally.'
+            "Timeout, make sure the Google Maps API is loaded globally."
           );
         if (window.google) return resolve();
         setTimeout(wait, 30);
@@ -126,7 +127,7 @@ export class AutoComplete {
     this.sessionToken = new window.google.maps.places.AutocompleteSessionToken();
     this.service = new window.google.maps.places.AutocompleteService();
     this.placeService = new window.google.maps.places.PlacesService(
-      document.createElement('div') // Requires an element to "bind" to
+      document.createElement("div") // Requires an element to "bind" to
     );
     this.ready.emit();
   }
@@ -142,46 +143,46 @@ export class AutoComplete {
   };
 
   private fillPostcode = (tempPostcode, comp) => {
-    if (comp.types.indexOf('postal_code') !== -1) {
+    if (comp.types.indexOf("postal_code") !== -1) {
       tempPostcode.main = comp.short_name;
-    } else if (comp.types.indexOf('postal_code_prefix') !== -1) {
+    } else if (comp.types.indexOf("postal_code_prefix") !== -1) {
       tempPostcode.prefix = comp.short_name;
-    } else if (comp.types.indexOf('postal_code_suffix') !== -1) {
+    } else if (comp.types.indexOf("postal_code_suffix") !== -1) {
       tempPostcode.suffix = comp.short_name;
     }
   };
 
   private fillStreet = (tempStreet, comp) => {
-    if (comp.types.indexOf('street_number') !== -1) {
+    if (comp.types.indexOf("street_number") !== -1) {
       tempStreet.unshift(comp.short_name);
     }
 
-    if (comp.types.indexOf('route') !== -1) {
+    if (comp.types.indexOf("route") !== -1) {
       tempStreet.push(comp.long_name);
     }
 
     if (tempStreet.length) {
       this.setField({
         identifier: `${this.autocompleteIdentifier}_street`,
-        data: tempStreet.join(' ')
+        data: tempStreet.join(" ")
       });
     } else {
       this.setField({
         identifier: `${this.autocompleteIdentifier}_street`,
-        data: ''
+        data: ""
       });
     }
   };
 
   private fillState = (filledFields, comp) => {
-    if (comp.types.indexOf('administrative_area_level_2') !== -1) {
+    if (comp.types.indexOf("administrative_area_level_2") !== -1) {
       this.setField({
         identifier: `${this.autocompleteIdentifier}_state`,
         data: comp.long_name
       });
       filledFields[`${this.autocompleteIdentifier}_state`] = true;
     } else if (
-      comp.types.indexOf('administrative_area_level_1') !== -1 &&
+      comp.types.indexOf("administrative_area_level_1") !== -1 &&
       !filledFields[`${this.autocompleteIdentifier}_state`]
     ) {
       this.setField({
@@ -192,20 +193,20 @@ export class AutoComplete {
     } else if (!filledFields[`${this.autocompleteIdentifier}_state`]) {
       this.setField({
         identifier: `${this.autocompleteIdentifier}_state`,
-        data: ''
+        data: ""
       });
     }
   };
 
   private fillCity = (filledFields, comp) => {
-    if (comp.types.indexOf('locality') !== -1) {
+    if (comp.types.indexOf("locality") !== -1) {
       this.setField({
         identifier: `${this.autocompleteIdentifier}_city`,
         data: comp.long_name
       });
       filledFields[`${this.autocompleteIdentifier}_city`] = true;
     } else if (
-      comp.types.indexOf('postal_town') !== -1 &&
+      comp.types.indexOf("postal_town") !== -1 &&
       !filledFields[`${this.autocompleteIdentifier}_city`]
     ) {
       this.setField({
@@ -216,7 +217,7 @@ export class AutoComplete {
     } else if (!filledFields[`${this.autocompleteIdentifier}_city`]) {
       this.setField({
         identifier: `${this.autocompleteIdentifier}_city`,
-        data: ''
+        data: ""
       });
     }
   };
@@ -225,9 +226,9 @@ export class AutoComplete {
     console.log(components);
     let tempStreet = [];
     let tempPostcode = {
-      prefix: '',
-      main: '',
-      suffix: ''
+      prefix: "",
+      main: "",
+      suffix: ""
     };
 
     let filledFields = {
@@ -244,7 +245,7 @@ export class AutoComplete {
       this.fillCity(filledFields, comp);
     });
 
-    let finalPostcode = '';
+    let finalPostcode = "";
     Object.keys(tempPostcode).forEach(key => {
       finalPostcode += `${tempPostcode[key]} `;
     });
@@ -254,25 +255,33 @@ export class AutoComplete {
       data: finalPostcode.trim()
     });
 
-    console.log('will emit');
+    console.log("will emit");
+
+    console.log(this.element);
 
     // this.placeChange.emit(this.changedPlace);
-    this.element.dispatchEvent(new CustomEvent('change', { detail: this.changedPlace, composed: true, bubbles: true }));
+    this.element.dispatchEvent(
+      new CustomEvent("placeChange", {
+        detail: this.changedPlace,
+        composed: true,
+        bubbles: true
+      })
+    );
 
     this.dropdownVisible = false;
     this.predictions = [];
   };
 
   emulatePlaceChange = (opt): any => {
-    console.log('click trigger');
+    console.log("click trigger");
     this.placeService.getDetails(
       {
         placeId: opt.place_id,
-        fields: ['address_component']
+        fields: ["address_component"]
       },
       (place: any, status: string) => {
         if (status == window.google.maps.places.PlacesServiceStatus.OK) {
-          console.log('service ok');
+          console.log("service ok");
           this.setPlaces(place.address_components);
         } else {
           console.log(status);
@@ -293,7 +302,7 @@ export class AutoComplete {
   };
 
   private callAutoComplete = (): any => {
-    if (this.street !== '') {
+    if (this.street !== "") {
       let componentRestrictions = this.currentCountryIso
         ? { country: this.currentCountryIso }
         : {};
@@ -303,7 +312,7 @@ export class AutoComplete {
             input: this.street,
             componentRestrictions,
             sessionToken: this.sessionToken,
-            types: ['address']
+            types: ["address"]
           },
           (predictions, status) => {
             if (status != window.google.maps.places.PlacesServiceStatus.OK) {
