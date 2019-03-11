@@ -68,8 +68,8 @@ export class AutoComplete {
   @Prop() autocompleteIdentifier: string;
   @Prop() name: string;
 
-  @Event() placeChange: EventEmitter;
-  @Event() ready: EventEmitter;
+  @Event({ eventName: 'autocomplete:placeChange', composed: true }) placeChange: EventEmitter;
+  @Event({ composed: true }) ready: EventEmitter;
 
   @Watch('service')
   serviceWatchHandler(newVal: boolean) {
