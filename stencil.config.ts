@@ -1,11 +1,16 @@
-import { Config } from '@stencil/core';
+import { Config } from "@stencil/core";
 
 export const config: Config = {
-  namespace: 'auto-complete',
+  namespace: "autocomplete",
+  bundles: [{ components: ["auto-complete"] }],
   outputTargets: [
-    { type: 'dist' },
+    { type: "dist" },
     {
-      type: 'www'
+      type: "www",
+      serviceWorker: {
+        skipWaiting: true,
+        clientsClaim: true
+      }
     }
   ]
 };
