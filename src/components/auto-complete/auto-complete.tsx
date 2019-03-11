@@ -4,7 +4,8 @@ import {
   State,
   Watch,
   Event,
-  EventEmitter
+  EventEmitter,
+  FunctionalComponent
 } from '@stencil/core';
 import {
   PlaceService,
@@ -14,6 +15,27 @@ import {
   AutocompleteService
 } from './definitions/auto-complete';
 import { debounce } from 'throttle-debounce';
+
+interface PredictionListProps {
+  predictions: Array<Prediction>,
+  handleClick: Function,
+  visible: Boolean
+}
+
+const PredictionList: FunctionalComponent<PredictionListProps> = ({ predictions, handleClick, visible }) => (
+  <ul class={`${visible ? '' : 'hidden'}`}>
+    {predictions &&
+      predictions.map(prediction => (
+        <li
+          key={prediction.id}
+          onClick={() => handleClick(prediction)}
+        >
+          {prediction.description}
+        </li>
+      ))
+    }
+  </ul>
+);
 
 /**
  * Usage: `auto-complete`
@@ -65,24 +87,15 @@ export class AutoComplete {
           id={this.name}
           onInput={this.handleInput}
           onKeyUp={this.callAutoComplete}
-          // onBlur={this.hideDropdown}
-          // onFocus={this.showDropdown}
+          onBlur={this.hideDropdown}
+          onFocus={this.showDropdown}
           value={this.street}
         />
-        {this.dropdownVisible ? (
-          <ul>
-            {this.predictions &&
-              this.predictions.map(prediction => (
-                <li
-                  key={prediction.id}
-                  onClick={() => this.emulatePlaceChange(prediction)}
-                >
-                  {prediction.description}
-                </li>
-              ))
-            }
-          </ul>
-        ) : null}
+        <PredictionList
+          visible={this.dropdownVisible}
+          predictions={this.predictions}
+          handleClick={this.emulatePlaceChange}
+        />
       </div>
     );
   }
@@ -111,15 +124,15 @@ export class AutoComplete {
     this.ready.emit();
   }
 
-  // private showDropdown = () => {
-  //   if (this.predictions.length > 0) {
-  //     this.dropdownVisible = true;
-  //   }
-  // };
+  private showDropdown = () => {
+    if (this.predictions.length > 0) {
+      this.dropdownVisible = true;
+    }
+  };
 
-  // private hideDropdown = () => {
-  //   this.dropdownVisible = false;
-  // };
+  private hideDropdown = () => {
+    this.dropdownVisible = false;
+  };
 
   private fillPostcode = (tempPostcode, comp) => {
     if (comp.types.indexOf('postal_code') !== -1) {
