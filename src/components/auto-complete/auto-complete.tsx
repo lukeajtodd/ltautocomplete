@@ -37,7 +37,7 @@ export class AutoComplete {
 
   @State() predictions: Array<Prediction> = [];
   @State() currentCountryIso: string;
-  @State() dropdownVisible: boolean;
+  @State() dropdownVisible: boolean = false;
   @State() service: AutocompleteService;
   @State() google: GoogleMapsObject;
   @State() street: string;
@@ -65,8 +65,8 @@ export class AutoComplete {
           id={this.name}
           onInput={this.handleInput}
           onKeyUp={this.callAutoComplete}
-          onBlur={this.hideDropdown}
-          onFocus={this.showDropdown}
+          // onBlur={this.hideDropdown}
+          // onFocus={this.showDropdown}
           value={this.street}
         />
         {this.dropdownVisible ? (
@@ -111,15 +111,15 @@ export class AutoComplete {
     this.ready.emit();
   }
 
-  private showDropdown = () => {
-    if (this.predictions.length > 0) {
-      this.dropdownVisible = true;
-    }
-  };
+  // private showDropdown = () => {
+  //   if (this.predictions.length > 0) {
+  //     this.dropdownVisible = true;
+  //   }
+  // };
 
-  private hideDropdown = () => {
-    this.dropdownVisible = false;
-  };
+  // private hideDropdown = () => {
+  //   this.dropdownVisible = false;
+  // };
 
   private fillPostcode = (tempPostcode, comp) => {
     if (comp.types.indexOf('postal_code') !== -1) {
