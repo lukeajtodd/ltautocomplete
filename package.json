@@ -1,6 +1,6 @@
 {
   "name": "ltautocomplete",
-  "version": "0.1.0",
+  "version": "0.0.13",
   "description": "Autocomplete - Google Places Service",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
