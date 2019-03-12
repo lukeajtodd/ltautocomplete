@@ -213,7 +213,6 @@ export class AutoComplete {
   };
 
   private setPlaces = (components: Array<any>): void => {
-    console.log(components);
     let tempStreet = [];
     let tempPostcode = {
       prefix: "",
@@ -245,8 +244,6 @@ export class AutoComplete {
       data: finalPostcode.trim()
     });
 
-    console.log("will emit");
-
     this.placeChange.emit(this.changedPlace);
 
     this.dropdownVisible = false;
@@ -254,7 +251,6 @@ export class AutoComplete {
   };
 
   emulatePlaceChange = (opt): any => {
-    console.log("click trigger");
     this.placeService.getDetails(
       {
         placeId: opt.place_id,
@@ -262,7 +258,7 @@ export class AutoComplete {
       },
       (place: any, status: string) => {
         if (status == window.google.maps.places.PlacesServiceStatus.OK) {
-          console.log("service ok");
+          console.log("Google service ok");
           this.setPlaces(place.address_components);
         } else {
           console.log(status);

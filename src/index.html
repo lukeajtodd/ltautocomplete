@@ -11,7 +11,7 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmOfcLgcILrhAn1jOy_dN05APrAcvMZnE&libraries=places"
       async
     ></script>
-    <script src="/build/auto-complete.js"></script>
+    <script src="https://unpkg.com/ltautocomplete@0.0.23/dist/autocomplete.js"></script>
     <style>
       auto-complete {
         --font-size: 13px;
@@ -32,12 +32,6 @@
       class="form-control"
     ></auto-complete>
 
-    <script>
-      document.querySelectorAll('auto-complete').forEach(comp => {
-        comp.addEventListener('placeChange', e => {
-          console.log(e);
-        });
-      });
-    </script>
+    <script src="/test/listener.js"></script>
   </body>
 </html>
